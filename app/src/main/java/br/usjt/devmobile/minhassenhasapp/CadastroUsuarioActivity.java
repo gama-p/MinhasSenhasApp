@@ -1,5 +1,6 @@
 package br.usjt.devmobile.minhassenhasapp;
 
+
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
@@ -9,8 +10,6 @@ import android.widget.Toast;
 
 import com.google.android.material.textfield.TextInputEditText;
 import com.orhanobut.hawk.Hawk;
-
-import java.util.List;
 
 public class CadastroUsuarioActivity extends AppCompatActivity {
 
