@@ -1,6 +1,5 @@
 package br.usjt.devmobile.minhassenhasapp;
 
-
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.room.Room;
 import android.os.AsyncTask;
@@ -41,9 +40,9 @@ public class CadastroSenhaActivity extends AppCompatActivity {
                 this.senha.getText().toString(),
                 url.getText().toString(),
                 observacao.getText().toString()
-        );
+                );
 
-        new SaveSenhaAsyncTask().execute(senha);
+                new SaveSenhaAsyncTask().execute(senha);
     }
 
 
@@ -51,8 +50,8 @@ public class CadastroSenhaActivity extends AppCompatActivity {
     {
         @Override
         protected Boolean doInBackground(Senha... senha) {
-            db.senhaDao().insertAll(senha);
-            return true;
+           db.senhaDao().insertAll(senha);
+           return true;
         }
 
         @Override

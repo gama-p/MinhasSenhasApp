@@ -1,15 +1,19 @@
 package br.usjt.devmobile.minhassenhasapp;
 
-
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.Activity;
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 
+import com.github.dhaval2404.imagepicker.ImagePicker;
 import com.google.android.material.textfield.TextInputEditText;
 import com.orhanobut.hawk.Hawk;
+import com.rishabhharit.roundedimageview.RoundedImageView;
 
 public class CadastroUsuarioActivity extends AppCompatActivity {
 
@@ -18,6 +22,7 @@ public class CadastroUsuarioActivity extends AppCompatActivity {
     private TextInputEditText senha;
     private TextInputEditText pergunta;
     private TextInputEditText resposta;
+    private RoundedImageView imagem;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -27,6 +32,7 @@ public class CadastroUsuarioActivity extends AppCompatActivity {
         senha = (TextInputEditText)findViewById(R.id.senhaEditTextInput);
         pergunta = (TextInputEditText)findViewById(R.id.perguntaEditTextInput);
         resposta = (TextInputEditText)findViewById(R.id.respostaEditTextInput);
+        imagem = findViewById(R.id.userImage);
         Hawk.init(this).build();
     }
 
@@ -45,5 +51,35 @@ public class CadastroUsuarioActivity extends AppCompatActivity {
 
     }
 
+
+    public void capturarImagem(View view) {
+
+        ImagePicker.Companion.with(this)
+                .crop()
+                .compress(1024)
+                .maxResultSize(1080, 1080)
+                .start();
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if (resultCode == Activity.RESULT_OK) {
+
+            Uri fileUri = data.getData();
+            imagem.setImageURI(fileUri);
+
+            Hawk.put("imagem",fileUri.getPath());
+
+
+        } else if (resultCode == ImagePicker.RESULT_ERROR) {
+            Toast.makeText(this, "Erro na captura da imagem", Toast.LENGTH_SHORT).show();
+        } else {
+            Toast.makeText(this, "Captura de imagem cancelada", Toast.LENGTH_SHORT).show();
+        }
+
+
+    }
 
 }
