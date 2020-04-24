@@ -26,10 +26,13 @@ public class ListasSenhasActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_lista_senhas);
-         db = Room.databaseBuilder(this.getApplicationContext(),
+        db = Room.databaseBuilder(this.getApplicationContext(),
                 AppDatabase.class, "database-name").build();
         listaSenhas = geraListaSenhas();
         senhasListView = findViewById(R.id.senhasListView);
+        if(listaSenhas == null){
+            adicionarSenha(senhasListView);
+        }
 
         adapter =
                 new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, listaSenhas);

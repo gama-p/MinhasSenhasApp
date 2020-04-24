@@ -1,12 +1,8 @@
-# MinhasSenhasApp
-Projeto Prático Android - USJT -  2020_1
-Agenda de Contatos
-Autor: Elcio A.
+Projeto Prático Android - USJT - 2020_1 Agenda de Contatos Autor: Elcio A.
 
 Introdução
 
-Este documento descreve o projeto prática para a aula de Desenvolvimento de Sistemas Mobile. Nesse projeto iremos desenvolver um aplicativo para cadastro de senhas.
-A ideia consiste em um CRUD onde vou poder armazenar localmente um banco de dados com as senhas que o usuário utiliza no dia a dia.
+Este documento descreve o projeto prática para a aula de Desenvolvimento de Sistemas Mobile. Nesse projeto iremos desenvolver um aplicativo para cadastro de senhas. A ideia consiste em um CRUD onde vou poder armazenar localmente um banco de dados com as senhas que o usuário utiliza no dia a dia.
 
 Lista de Telas
 
@@ -24,18 +20,8 @@ No decorrer das aulas poderemos adicionar mais funcionalidades.
 
 O que vamos aprender:
 
-Navegação entre telas;
-Acesso a propriedades do sistema;
-Formulários de Cadastro;
-Banco de Dados;
-Listas Master - Detail;
-Outras, conforme demanda.
-
-
-
+Navegação entre telas; Acesso a propriedades do sistema; Formulários de Cadastro; Banco de Dados; Listas Master - Detail; Outras, conforme demanda.
 
 Bibliotecas a implementar:
 
-implementation "com.orhanobut:hawk:2.0.1"
-https://github.com/orhanobut/hawk
-
+implementation "com.orhanobut:hawk:2.0.1" https://github.com/orhanobut/hawk

@@ -1,6 +1,7 @@
 package br.usjt.devmobile.minhassenhasapp;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.DialogFragment;
 
 import android.content.Intent;
 import android.net.Uri;
@@ -16,8 +17,10 @@ import com.rishabhharit.roundedimageview.RoundedImageView;
 
 import java.io.File;
 
-public class MainActivity extends AppCompatActivity {
+import java.util.ArrayList;
+import java.util.List;
 
+public class MainActivity extends AppCompatActivity {
     private static final String TAG = "MainActivity";
     private TextInputEditText usuario;
     private TextInputEditText senha;
@@ -28,6 +31,8 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        TextInputEditText loginUsuario = (TextInputEditText) findViewById(R.id.emailEditTextInput);
+        TextInputEditText loginSenha = (TextInputEditText) findViewById(R.id.passwordEditTextInput);
         Hawk.init(this).build();
 
         usuario = findViewById(R.id.emailEditTextInput);
@@ -55,11 +60,8 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void fazerLogin(View view){
-
-
-
         if(usuario.getText().toString().equals(Hawk.get("usuario")) &&
-            senha.getText().toString().equals(Hawk.get("senha"))){
+                senha.getText().toString().equals(Hawk.get("senha"))){
 
             Intent intent = new Intent(this, ListasSenhasActivity.class);
             startActivity(intent);
@@ -72,14 +74,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void novoCadastro(View view){
-
-        if(Hawk.contains("usuario")){
-            Toast.makeText(this,"Usuário já cadastrado!",Toast.LENGTH_SHORT).show();
-        }else{
-            Intent intent = new Intent(this, CadastroUsuarioActivity.class);
-            startActivity(intent);
-        }
-
-
+        Intent intent = new Intent(this, CadastroUsuarioActivity.class);
+        startActivity(intent);
     }
 }
