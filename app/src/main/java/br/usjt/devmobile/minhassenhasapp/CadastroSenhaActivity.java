@@ -2,10 +2,10 @@ package br.usjt.devmobile.minhassenhasapp;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.room.Room;
+
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.text.Editable;
-import android.text.TextWatcher;
 import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
@@ -20,8 +20,10 @@ public class CadastroSenhaActivity extends AppCompatActivity {
     private TextInputEditText senha;
     private TextInputEditText url;
     private TextInputEditText observacao;
-    private Button saveButton;
     private AppDatabase db;
+    private Senha senhaCorrente;
+    private boolean alterar = false;
+    private Button botaoAlterar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,49 +36,61 @@ public class CadastroSenhaActivity extends AppCompatActivity {
         senha = (TextInputEditText)findViewById(R.id.cadSenhaEditTextInput);
         url = (TextInputEditText)findViewById(R.id.cadUrlEditTextInput);
         observacao = (TextInputEditText)findViewById(R.id.cadObservacaoEditTextInput);
-        saveButton = findViewById(R.id.loginButton);
+        //botaoAlterar = findViewById(R.id.buttonAltararCadastro);
 
-        nome.addTextChangedListener(validarCamposVazios);
-        usuario.addTextChangedListener(validarCamposVazios);
-        senha.addTextChangedListener(validarCamposVazios);
+        Intent intent = getIntent();
+        if(intent != null && intent.hasExtra("senha")){
+            senhaCorrente = (Senha)intent.getSerializableExtra("senha");
+            alterar = true;
+            botaoAlterar.setText("Alterar Registro de Senha");
+            preecherCampos();
+        }
+
     }
 
-    private TextWatcher validarCamposVazios = new TextWatcher() {
-        @Override
-        public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+    private void preecherCampos(){
 
-        }
+        nome.setText(senhaCorrente.getNome());
+        usuario.setText(senhaCorrente.getUsuario());
+        senha.setText(senhaCorrente.getSenha());
+        url.setText(senhaCorrente.getUrl());
+        observacao.setText(senhaCorrente.getObservacao());
 
-        @Override
-        public void onTextChanged(CharSequence s, int start, int before, int count) {
-            String nomeCheck = nome.getText().toString().trim();
-            String usuarioCheck = usuario.getText().toString().trim();
-            String senhaCheck = senha.getText().toString().trim();
-
-            saveButton.setEnabled(!nomeCheck.isEmpty() && !usuarioCheck.isEmpty() && !senhaCheck.isEmpty());
-        }
-
-        @Override
-        public void afterTextChanged(Editable s) {
-
-        }
-    };
+    }
 
     public void cadastrarSenha(View view) {
 
-        final Senha senha = new Senha(
-                nome.getText().toString(),
-                usuario.getText().toString(),
-                this.senha.getText().toString(),
-                url.getText().toString(),
-                observacao.getText().toString()
-        );
+        if(alterar){
 
-        new SaveSenhaAsyncTask().execute(senha);
+            senhaCorrente.setNome(nome.getText().toString());
+            senhaCorrente.setUsuario(usuario.getText().toString());
+            senhaCorrente.setSenha(senha.getText().toString());
+            senhaCorrente.setUrl(url.getText().toString());
+            senhaCorrente.setObservacao(observacao.getText().toString());
+
+            new AlterarSenhaAsyncTask().execute(senhaCorrente);
+        }else{
+
+            senhaCorrente = new Senha(
+                    nome.getText().toString(),
+                    usuario.getText().toString(),
+                    this.senha.getText().toString(),
+                    url.getText().toString(),
+                    observacao.getText().toString()
+            );
+
+            new CriarSenhaAsyncTask().execute(senhaCorrente);
+
+        }
+
+
+
+
+
     }
 
 
-    private class SaveSenhaAsyncTask extends AsyncTask<Senha, Void, Boolean>
+    private class CriarSenhaAsyncTask extends AsyncTask<Senha, Void, Boolean>
     {
         @Override
         protected Boolean doInBackground(Senha... senha) {
@@ -87,6 +101,21 @@ public class CadastroSenhaActivity extends AppCompatActivity {
         @Override
         protected void onPostExecute(Boolean sucess){
             Toast.makeText(CadastroSenhaActivity.this,"Senha criada com sucesso!",Toast.LENGTH_SHORT).show();
+            finish();
+        }
+    }
+
+    private class AlterarSenhaAsyncTask extends AsyncTask<Senha, Void, Boolean>
+    {
+        @Override
+        protected Boolean doInBackground(Senha... senhas) {
+            db.senhaDao().updateSenha(senhas[0]);
+            return true;
+        }
+
+        @Override
+        protected void onPostExecute(Boolean sucess){
+            Toast.makeText(CadastroSenhaActivity.this,"Senha foi alterada com sucesso!",Toast.LENGTH_SHORT).show();
             finish();
         }
     }
